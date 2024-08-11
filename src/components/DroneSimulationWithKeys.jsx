@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import * as THREE from "https://threejsfundamentals.org/threejs/resources/threejs/r127/build/three.module.js";
 import { GLTFLoader } from "https://threejsfundamentals.org/threejs/resources/threejs/r127/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "https://threejsfundamentals.org/threejs/resources/threejs/r127/examples/jsm/loaders/DRACOLoader.js";
-import { OrbitControls } from "https://threejsfundamentals.org/threejs/resources/threejs/r127/examples/jsm/controls/OrbitControls.js";
+// import { OrbitControls } from "https://threejsfundamentals.org/threejs/resources/threejs/r127/examples/jsm/controls/OrbitControls.js";
 import { RGBELoader } from "https://threejsfundamentals.org/threejs/resources/threejs/r127/examples/jsm/loaders/RGBELoader.js";
 import { Sky } from "https://threejsfundamentals.org/threejs/resources/threejs/r127/examples/jsm/objects/Sky.js";
 
@@ -50,7 +50,7 @@ const DroneSimulation = () => {
     loader.load('../../static/models/Drone.glb', (gltf) => {
       drone = gltf.scene;
       drone.position.set(0, 0, 0);
-      drone.scale.set(5, 5, 5);
+      drone.scale.set(10, 10, 10);
       drone.traverse((child) => {
         if (child.isMesh) {
           child.castShadow = true;
@@ -149,8 +149,8 @@ loader.load(
     scene.fog = new THREE.Fog(0xccbdc5, 30, 120);
 
     camera.position.set(0, 5, -10);
-    const controls = new OrbitControls(camera, renderer.domElement);
-    controls.update();
+    // const controls = new OrbitControls(camera, renderer.domElement);
+    // controls.update();
 
     // Keyboard controls
     const keyboard = {
@@ -167,10 +167,10 @@ loader.load(
     window.addEventListener('keydown', (event) => {
       switch (event.key) {
         case 'ArrowUp':
-          keyboard.pitchForward = true;
-          break;
-        case 'ArrowDown':
           keyboard.pitchBackward = true;
+          break;
+          case 'ArrowDown':
+          keyboard.pitchForward = true;
           break;
         case 'ArrowLeft':
           keyboard.rollLeft = true;
@@ -198,10 +198,10 @@ loader.load(
     window.addEventListener('keyup', (event) => {
       switch (event.key) {
         case 'ArrowUp':
-          keyboard.pitchForward = false;
-          break;
-        case 'ArrowDown':
           keyboard.pitchBackward = false;
+          break;
+          case 'ArrowDown':
+          keyboard.pitchForward = false;
           break;
         case 'ArrowLeft':
           keyboard.rollLeft = false;
@@ -226,7 +226,7 @@ loader.load(
       }
     });
 
-  var cameraoffset = new THREE.Vector3(10, 10, -10);
+  var cameraoffset = new THREE.Vector3(6, 10, -10);
   var cameraLerpFactor = 0.05; // control the speed of interpolation (0.05 is a good starting value)
 
 var droneCamera = new THREE.PerspectiveCamera(
@@ -291,19 +291,19 @@ window.addEventListener("keydown", function (event) {
       const euler = new THREE.Euler(0, 0, 0, 'YXZ');
       const quaternion = new THREE.Quaternion();
   
-      let roll = 0, pitch = 0, yaw = 0, throttle = 0, yawSpeed = 2; // Adjust this value to control yaw speed
+      let roll = 0, pitch = 0, yaw = 0, throttle = 0, yawSpeed = 7; // Adjust this value to control yaw speed
   
-      if (keyboard.pitchForward) pitch = -0.1;
-      else if (keyboard.pitchBackward) pitch = 0.1;
+      if (keyboard.pitchForward) pitch = -0.2;
+      else if (keyboard.pitchBackward) pitch = 0.2;
   
-      if (keyboard.rollLeft) roll = -0.1;
-      else if (keyboard.rollRight) roll = 0.1;
+      if (keyboard.rollLeft) roll = -0.2;
+      else if (keyboard.rollRight) roll = 0.2;
   
       if (keyboard.yawLeft) yaw = yawSpeed;
       else if (keyboard.yawRight) yaw = -yawSpeed;
   
-      if (keyboard.throttleUp) throttle = 0.1;
-      else if (keyboard.throttleDown) throttle = -0.1;
+      if (keyboard.throttleUp) throttle = 0.2;
+      else if (keyboard.throttleDown) throttle = -0.2;
   
       last_yaw += yaw * 0.01;
   
@@ -383,7 +383,7 @@ window.addEventListener("keydown", function (event) {
         try {
           camera.lookAt(drone.position);
         } catch (error) {
-          console.log(error);
+          console.log("Error",error);
         }
       }
     }
@@ -391,13 +391,7 @@ window.addEventListener("keydown", function (event) {
     if (mixer) {
       mixer.update(scale(desiredAltitude, -1, 0, 1, 0, 0.5, 5));
     }
-    // var targetPosition = new THREE.Vector3();
-    // try {
-    //   targetPosition.copy(drone.position).add(cameraoffset);
-    // } catch (error) {
-    //   // console.log("target position ",targetPosition, " drone postion ", drone.position, " camera offset ", cameraoffset)
-    //   console.log("err 2 :", error);
-    // }
+    
     if (drone && drone.position) {
       var targetPosition = new THREE.Vector3();
       targetPosition.copy(drone.position).add(cameraoffset);
@@ -406,7 +400,7 @@ window.addEventListener("keydown", function (event) {
       }
       
     }
-    controls.update();
+    // controls.update();
     renderer.render(scene, activeCamera);
   };
 
@@ -417,8 +411,14 @@ window.addEventListener("keydown", function (event) {
     };
   }, []);
 
-  return <div ref={mountRef} style={{ width: '100%', height: '100vh' }} />;
+  return <div ref={mountRef} style={{ width: '100%', height: '100vh', position: "fixed",
+    bottom: "20px",
+    left: "50%",
+    transform: "translateX(-50%)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-around",
+    gap: "50px", }} />;
 }
 
 export default DroneSimulation
-

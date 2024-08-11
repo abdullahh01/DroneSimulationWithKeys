@@ -1,11 +1,15 @@
-import DroneSimulation from "./components/DroneSimulation.jsx"
+import DroneSimulation from "./components/DroneSimulationWithKeys.jsx"
+import DroneSimulationWithJoystick from "./components/DroneSimulationWithJoystick.jsx"
+import DroneSimulationWithGestures from "./components/DroneSimulationWithGestures.jsx"
 // import './App.css'
 
 function App() {
 
   return (
     <>
-      <DroneSimulation/>
+      <DroneSimulationWithGestures />
+      {/* <DroneSimulation/>
+      <DroneSimulationWithJoystick/> */}
     </>
   )
 }
